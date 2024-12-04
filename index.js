@@ -1,14 +1,20 @@
 import express from "express";
-import todoRouter from "./todo-router.js";
-import userRouter from "./auth-router.js";
+import cors from "cors";
+import mongoose from "mongoose";
+import authRouter from "./auth-router.js";
+import dotenv from "dotenv";
 
-const PORT = 3001;
+dotenv.config();
+
+const PORT = 3333;
 const app = express();
+
 app.use(express.json());
+app.use(cors());
 
-app.use(todoRouter);
-app.use(userRouter);
+app.use(authRouter);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  await mongoose.connect(process.env.DATABASE_URL);
   console.log(`Server is running on http://localhost:${PORT}`);
 });
